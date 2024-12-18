@@ -11,11 +11,11 @@ namespace StudyCase.Services.WebCrawlerService
         {
             _htmlLoader = htmlLoader;
         }
-        public List<string> GetLinks(string url)
+        public async Task<List<string>> GetLinks(string url)
         {
             try
             {
-                var document = _htmlLoader.Load(url);
+                var document = await _htmlLoader.LoadAsync(url);
                 var nodes = document.DocumentNode.SelectNodes("//a");
 
                 if (nodes != null)

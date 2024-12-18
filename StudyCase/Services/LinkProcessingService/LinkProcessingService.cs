@@ -11,7 +11,7 @@ namespace StudyCase.Services.LinkProcessingService
         {
             _sozcuService = sozcuService;
         }
-        public List<string> FilterLinks(List<string> links, string search)
+        public async Task<List<string>> FilterLinks(List<string> links, string search)
         {
             if (string.IsNullOrEmpty(search)) return links;
 
@@ -19,26 +19,26 @@ namespace StudyCase.Services.LinkProcessingService
         }
 
 
-        public (List<string> PagedLinks, int TotalPages) GetPagedLinksWithFiltering(PaginationModel paginationModel)
+        public async Task<(List<string> PagedLinks, int TotalPages)> GetPagedLinksWithFiltering(PaginationModel paginationModel)
         {
             // Get all links from the web
-            List<string> allLinks = _sozcuService.GetLinksFromSozcu();
+            List<string> allLinks = await _sozcuService.GetLinksFromSozcu();
 
             // Filter the links based on the search term
-            allLinks = FilterLinks(allLinks, paginationModel.Search);
+            allLinks = await FilterLinks(allLinks, paginationModel.Search);
 
             // Calculate pagination
-            var (pagedLinks, totalPages) = GetPagedLinks(allLinks, paginationModel.Page, paginationModel.PageSize);
+            var (pagedLinks, totalPages) = await GetPagedLinks(allLinks, paginationModel.Page, paginationModel.PageSize);
 
             return (pagedLinks, totalPages);
         }
 
-        public (List<string> PagedLinks, int TotalPages) GetPagedLinks(List<string> links, int page, int pageSize)
+        public async Task<(List<string> PagedLinks, int TotalPages)> GetPagedLinks(List<string> links, int page, int pageSize)
         {
             int totalPages = (int)Math.Ceiling((double)links.Count / pageSize);
             var pagedLinks = links.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-            return (pagedLinks, totalPages);
+            return await Task.FromResult((pagedLinks, totalPages));
         }
     }
 }

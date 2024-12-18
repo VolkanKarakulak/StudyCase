@@ -9,7 +9,7 @@ namespace StudyCase.Extension
          {
                 // SozcuSettings sınıfını appsettings.json'dan alıyoruz
                 services.Configure<SozcuSettings>(configuration.GetSection("SozcuSettings"));
-          }  
+         }  
 
     }
 }

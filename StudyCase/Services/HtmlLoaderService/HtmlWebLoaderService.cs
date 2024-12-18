@@ -4,10 +4,19 @@ namespace StudyCase.Services.HtmlLoaderService
 {
     public class HtmlWebLoaderService : IHtmlLoaderService
     {
-        public HtmlDocument Load(string url)
+        private readonly HttpClient _httpClient;
+
+        public HtmlWebLoaderService(HttpClient httpClient)
         {
-            var web = new HtmlWeb();
-            return web.Load(url);
+            _httpClient = httpClient;
+        }
+
+        public async Task<HtmlDocument> LoadAsync(string url)
+        {
+            var response = await _httpClient.GetStringAsync(url);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(response);
+            return doc;
         }
     }
 }

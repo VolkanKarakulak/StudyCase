@@ -2,8 +2,8 @@
 {
     public interface IElasticsearchService
     {
-        string SaveLinks(List<string> links);
+        Task<string> SaveLinks(List<string> links);
 
-        List<string> GetLinksFromElasticsearch(string search = null);
+        Task<List<string>> GetLinksFromElasticsearch(string search = null);
     }
 }

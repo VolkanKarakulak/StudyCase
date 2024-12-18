@@ -10,21 +10,17 @@ namespace StudyCase.Controllers
     public class HomeController : Controller
     {
     
-
         private readonly ILinkProcessingService _linkProcessingService;
-
- 
 
         public HomeController(ILinkProcessingService linkProcessingService)
         {
-            _linkProcessingService = linkProcessingService;
-    
+            _linkProcessingService = linkProcessingService;   
         }
 
-        public ActionResult Index(PaginationModel paginationModel)
+        public async Task<ActionResult> Index(PaginationModel paginationModel)
         {
 
-            var (pagedLinks, totalPages) = _linkProcessingService.GetPagedLinksWithFiltering(paginationModel);
+            var (pagedLinks, totalPages) = await _linkProcessingService.GetPagedLinksWithFiltering(paginationModel);
 
             // Sayfa baþýna kaç öðe olduðunu, toplam öðe sayýsýný ve geçerli sayfayý ViewData ile gönderiyoruz
             ViewData["CurrentPage"] = paginationModel.Page;

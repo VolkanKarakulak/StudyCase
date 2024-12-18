@@ -11,7 +11,7 @@ namespace StudyCase.Services.ElasticsearchService
             var settings = new ConnectionSettings(new Uri("http://localhost:9200")).DefaultIndex("sozcu_links");
             _client = new ElasticClient(settings);
         }
-        public string SaveLinks(List<string> links)
+        public async Task<string> SaveLinks(List<string> links)
         {
             var bulkRequest = new BulkRequest
             {
@@ -29,7 +29,7 @@ namespace StudyCase.Services.ElasticsearchService
         }
 
         // Elasticsearch'ten bağlantıları çekme (arama yaparak)
-        public List<string> GetLinksFromElasticsearch(string search = null)
+        public async Task<List<string>> GetLinksFromElasticsearch(string search = null)
         {
             var searchDescriptor = new SearchDescriptor<string>()
                 .Query(q => q.MatchAll()); // Varsayılan olarak tüm veriler

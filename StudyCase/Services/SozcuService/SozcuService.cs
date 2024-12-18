@@ -16,10 +16,10 @@ namespace StudyCase.Services.SozcuService
         }
 
 
-        public List<string> GetLinksFromSozcu()
+        public async Task<List<string>> GetLinksFromSozcu()
         {
             string fullUrl = new Uri(new Uri(_sozcuSettings.BaseUrl), "/").ToString();
-            return _webCrawlerService.GetLinks(fullUrl);
+            return await  _webCrawlerService.GetLinks(fullUrl);
         }
 
     }

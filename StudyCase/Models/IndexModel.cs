@@ -14,9 +14,9 @@ namespace StudyCase.Models
 
         public List<string> Links { get; set; }
 
-        public void OnGet()
+        public async Task OnGet()
         {
-            var response = _elasticsearchService.GetLinksFromElasticsearch();
+            var response = await _elasticsearchService.GetLinksFromElasticsearch();
             Links = response.ToList();
         }
     }

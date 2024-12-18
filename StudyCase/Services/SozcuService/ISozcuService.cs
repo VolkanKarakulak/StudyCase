@@ -2,6 +2,6 @@
 {
     public interface ISozcuService
     {
-        List<string> GetLinksFromSozcu();
+        Task<List<string>> GetLinksFromSozcu();
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IWebCrawlerService
     {
-         List<string> GetLinks(string url);
+         Task<List<string>> GetLinks(string url);
     }
 }
