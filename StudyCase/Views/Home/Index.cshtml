@@ -1,0 +1,103 @@
+﻿@model List<string>
+
+@{
+    ViewData["Title"] = "Sozcu Web Sitesinden Çekilen Linkler";
+    var currentPage = ViewData["CurrentPage"] as int? ?? 1;
+    var totalPages = ViewData["TotalPages"] as int? ?? 1;
+}
+
+
+<script>
+    window.addEventListener("load", () => {
+        const currentPage = @currentPage; // Sunucudan gelen currentPage değeri
+        const totalPages = @totalPages; // Sunucudan gelen totalPages değeri
+
+        // Sayfa numarasını güncelle
+        document.querySelector('.page-number-display').textContent = `Sayfa: ${currentPage} / ${totalPages}`;
+    });
+</script>
+
+<form method="get">
+    <input type="text" name="search" placeholder="Ara..." value="@ViewData["Search"]" />
+    <button type="submit">Ara</button>
+</form>
+
+
+
+
+<div class="container mt-5">
+    <!-- Başlık ve Açıklamalar -->
+    <div class="text-center mb-4">
+        <h2 class="display-4 text-primary">Sözcü Web Sitesinden Çekilen Linkler</h2>
+        <p class="lead text-muted">Aşağıda, www.sozcu.com.tr adresinden çekilen tüm bağlantılar listelenmiştir.</p>
+        <!-- Sayfa Numarası -->
+        <div class="page-number-display">
+            <strong>Sayfa: @currentPage / @totalPages</strong>
+        </div>
+    </div>
+
+    <!-- Link Listesi -->
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="list-group">
+            @foreach (var link in Model)
+            {
+                <a href="@link" class="list-group-item list-group-item-action" target="_blank">
+                    @link
+                </a>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            Linkler çekilemedi veya sayfa boş.
+        </div>
+    }
+
+    <!-- Sayfalama -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            @if (currentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { page = currentPage - 1, pageSize = 10 })" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
+
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = 10 })">@i</a>
+                </li>
+            }
+
+            @if (currentPage < totalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { page = currentPage + 1, pageSize = 10 })" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+<!-- Modern Stil için Bootstrap ve CSS -->
+<style>
+    .list-group-item {
+        transition: background-color 0.3s ease;
+    }
+
+        .list-group-item:hover {
+            background-color: #f1f1f1;
+        }
+
+    .alert-warning {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+</style>
