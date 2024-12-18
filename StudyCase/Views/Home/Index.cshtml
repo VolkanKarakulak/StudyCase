@@ -4,6 +4,7 @@
     ViewData["Title"] = "Sozcu Web Sitesinden Çekilen Linkler";
     var currentPage = ViewData["CurrentPage"] as int? ?? 1;
     var totalPages = ViewData["TotalPages"] as int? ?? 1;
+    var searchQuery = ViewData["Search"] as string;
 }
 
 
@@ -83,6 +84,18 @@
                 </li>
             }
         </ul>
+        @if (currentPage > 1)
+        {
+            <div class="mt-4">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Geri Dön</a>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(searchQuery))
+        {
+            <div class="mt-4">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Geri Dön</a>
+            </div>
+        }
     </nav>
 </div>
 
