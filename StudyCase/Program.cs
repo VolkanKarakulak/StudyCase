@@ -1,12 +1,22 @@
+using Microsoft.Extensions.Configuration;
+using StudyCase.Configuration;
+using StudyCase.Extension;
 using StudyCase.Services.HtmlLoaderService;
-using StudyCase.Services;
+using StudyCase.Services.LinkProcessingService;
+using StudyCase.Services.SozcuService;
+using StudyCase.Services.WebCrawlerService;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.Configure<SozcuSettings>(builder.Configuration.GetSection("SozcuSettings"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<WebCrawlerService>();  // WebCrawlerService'i DI'ye ekliyoruz.
-builder.Services.AddScoped<IHtmlLoader, HtmlWebLoader>();  // HtmlLoader'ý DI'ye ekliyoruz (gerekliyse)
+builder.Services.AddScoped<IWebCrawlerService, WebCrawlerService>();  // WebCrawlerService'i DI'ye ekliyoruz.
+builder.Services.AddScoped<ILinkProcessingService, LinkProcessingService>();
+builder.Services.AddScoped<ISozcuService, SozcuService>();
+builder.Services.AddScoped<IHtmlLoaderService, HtmlWebLoaderService>();  // HtmlLoader'ý DI'ye ekliyoruz (gerekliyse)
+
+
 
 var app = builder.Build();
 

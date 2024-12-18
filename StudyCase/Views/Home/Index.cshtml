@@ -5,37 +5,35 @@
     var currentPage = ViewData["CurrentPage"] as int? ?? 1;
     var totalPages = ViewData["TotalPages"] as int? ?? 1;
     var searchQuery = ViewData["Search"] as string;
+    var currentDateTime = ViewData["CurrentDateTime"] as string; // Tarih ve saat bilgisi
 }
-
-
-<script>
-    window.addEventListener("load", () => {
-        const currentPage = @currentPage; // Sunucudan gelen currentPage değeri
-        const totalPages = @totalPages; // Sunucudan gelen totalPages değeri
-
-        // Sayfa numarasını güncelle
-        document.querySelector('.page-number-display').textContent = `Sayfa: ${currentPage} / ${totalPages}`;
-    });
-</script>
-
-<form method="get">
-    <input type="text" name="search" placeholder="Ara..." value="@ViewData["Search"]" />
-    <button type="submit">Ara</button>
-</form>
-
 
 
 
 <div class="container mt-5">
     <!-- Başlık ve Açıklamalar -->
     <div class="text-center mb-4">
-        <h2 class="display-4 text-primary">Sözcü Web Sitesinden Çekilen Linkler</h2>
-        <p class="lead text-muted">Aşağıda, www.sozcu.com.tr adresinden çekilen tüm bağlantılar listelenmiştir.</p>
+        <h3 class="display-5 text-primary"><strong>www.sozcu.com.tr</strong> adresinden çekilen bağlantılar</h3>
+        @* <p class="lead text-muted">Aşağıda www.sozcu.com.tr adresinden çekilen tüm bağlantılar listelenmiştir.</p> *@
+
+        <p id="date-time"></p>
+
+    </div>
+    <!-- Arama Formu - Başlık Altında -->
+    <div class="text-center mb-4">
+        <form method="get" class="d-flex justify-content-center">
+            <input type="text" name="search" placeholder="Ara..." value="@ViewData["Search"]" class="form-control w-50 me-2" />
+            <button type="submit" class="btn btn-primary">Ara</button>
+        </form>
+    </div>
+
+    <div class="d-flex justify-content-between mb-2">
         <!-- Sayfa Numarası -->
-        <div class="page-number-display">
+        <div class="page-number-display text-end">
             <strong>Sayfa: @currentPage / @totalPages</strong>
         </div>
     </div>
+
 
     <!-- Link Listesi -->
     @if (Model != null && Model.Count > 0)
@@ -57,6 +55,7 @@
     }
 
     <!-- Sayfalama -->
+    <br/>
     <nav>
         <ul class="pagination justify-content-center">
             @if (currentPage > 1)
@@ -98,19 +97,6 @@
         }
     </nav>
 </div>
+</div>
 
-<!-- Modern Stil için Bootstrap ve CSS -->
-<style>
-    .list-group-item {
-        transition: background-color 0.3s ease;
-    }
 
-        .list-group-item:hover {
-            background-color: #f1f1f1;
-        }
-
-    .alert-warning {
-        background-color: #fff3cd;
-        color: #856404;
-    }
-</style>

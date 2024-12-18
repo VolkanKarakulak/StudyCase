@@ -2,7 +2,7 @@
 
 namespace StudyCase.Services.HtmlLoaderService
 {
-    public class HtmlWebLoader : IHtmlLoader
+    public class HtmlWebLoaderService : IHtmlLoaderService
     {
         public HtmlDocument Load(string url)
         {

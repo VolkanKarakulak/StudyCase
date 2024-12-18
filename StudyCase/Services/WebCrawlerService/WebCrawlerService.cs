@@ -1,13 +1,13 @@
 ﻿using HtmlAgilityPack;
 using StudyCase.Services.HtmlLoaderService;
 
-namespace StudyCase.Services
+namespace StudyCase.Services.WebCrawlerService
 {
-    public class WebCrawlerService
+    public class WebCrawlerService : IWebCrawlerService
     {
-        private readonly IHtmlLoader _htmlLoader;
+        private readonly IHtmlLoaderService _htmlLoader;
 
-        public WebCrawlerService(IHtmlLoader htmlLoader)
+        public WebCrawlerService(IHtmlLoaderService htmlLoader)
         {
             _htmlLoader = htmlLoader;
         }
@@ -53,11 +53,12 @@ namespace StudyCase.Services
             }
             catch (Exception ex)
             {
-                // Hata durumunda loglama veya işlemleri yap
-                Console.WriteLine($"Error fetching links from {url}: {ex.Message}");
+                // Hata durumunda sadece boş bir liste dön
                 return new List<string>();
             }
         }
+
+
 
     }
 }

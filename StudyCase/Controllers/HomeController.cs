@@ -1,46 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
 using StudyCase.Models;
-using StudyCase.Services;
+using StudyCase.Services.LinkProcessingService;
+using StudyCase.Services.SozcuService;
+using StudyCase.Services.WebCrawlerService;
 using System.Diagnostics;
 
 namespace StudyCase.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly WebCrawlerService _webCrawlerService;
+    
 
-        public HomeController(ILogger<HomeController> logger,  WebCrawlerService webCrawlerService)
+        private readonly ILinkProcessingService _linkProcessingService;
+
+ 
+
+        public HomeController(ILinkProcessingService linkProcessingService)
         {
-            _logger = logger;
-            _webCrawlerService = webCrawlerService;
+            _linkProcessingService = linkProcessingService;
+    
         }
 
-        public ActionResult Index(string search,int page = 1, int pageSize = 10)
+        public ActionResult Index(PaginationModel paginationModel)
         {
-            // Göreli URL'yi tanýmlayýn (örnek olarak)
-            string relativeUrl = "/";  // Bu URL'yi dinamik olarak alabilirsiniz
-            string baseUrl = "https://www.sozcu.com.tr";
 
-            // Tam URL'yi oluþturun
-            string fullUrl = new Uri(new Uri(baseUrl), relativeUrl).ToString();
-
-            List<string> allLinks = _webCrawlerService.GetLinks(fullUrl);
-
-            if (!string.IsNullOrEmpty(search))
-            {
-                allLinks = allLinks.Where(link => link.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
-
-            // Sayfalama için veriyi dilimleme
-            var pagedLinks = allLinks.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var (pagedLinks, totalPages) = _linkProcessingService.GetPagedLinksWithFiltering(paginationModel);
 
             // Sayfa baþýna kaç öðe olduðunu, toplam öðe sayýsýný ve geçerli sayfayý ViewData ile gönderiyoruz
-            ViewData["CurrentPage"] = page;
-            ViewData["TotalPages"] = (int)Math.Ceiling((double)allLinks.Count / pageSize);
-            ViewData["TotalCount"] = allLinks.Count;
-            ViewData["Search"] = search;
-
+            ViewData["CurrentPage"] = paginationModel.Page;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["TotalCount"] = pagedLinks.Count;
+            ViewData["Search"] = paginationModel.Search;
+           
             return View(pagedLinks);
         }
 

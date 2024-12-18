@@ -2,7 +2,7 @@
 
 namespace StudyCase.Services.ElasticsearchService
 {
-    public class ElasticsearchService
+    public class ElasticsearchService : IElasticsearchService
     {
         private readonly ElasticClient _client;
 
@@ -11,7 +11,7 @@ namespace StudyCase.Services.ElasticsearchService
             var settings = new ConnectionSettings(new Uri("http://localhost:9200")).DefaultIndex("sozcu_links");
             _client = new ElasticClient(settings);
         }
-        public void SaveLinks(List<string> links)
+        public string SaveLinks(List<string> links)
         {
             var bulkRequest = new BulkRequest
             {
@@ -22,12 +22,10 @@ namespace StudyCase.Services.ElasticsearchService
 
             if (response.Errors)
             {
-                Console.WriteLine("Bulk index operation failed.");
+                return "Data indexing failed.";
             }
-            else
-            {
-                Console.WriteLine("Data successfully indexed in Elasticsearch.");
-            }
+
+            return "Data successfully indexed in Elasticsearch.";
         }
 
         // Elasticsearch'ten bağlantıları çekme (arama yaparak)
