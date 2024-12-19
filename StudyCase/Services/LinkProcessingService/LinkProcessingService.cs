@@ -42,6 +42,7 @@ namespace StudyCase.Services.LinkProcessingService
         {
             // Sayfa sayısını hesaplar (toplam link sayısı / sayfa başına link sayısı)
             int totalPages = (int)Math.Ceiling((double)links.Count / pageSize);
+       
 
             // Verilen sayfa numarası ve sayfa boyutuna göre linkleri alır.
             var pagedLinks = links.Skip((page - 1) * pageSize).Take(pageSize).ToList();

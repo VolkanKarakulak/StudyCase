@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using StudyCase.Models;
 using StudyCase.Services.LinkProcessingService;
-using StudyCase.Services.SozcuService;
-using StudyCase.Services.WebCrawlerService;
-using System.Diagnostics;
+using StudyCase.ViewModels;
+
 
 namespace StudyCase.Controllers
 {
@@ -22,13 +21,16 @@ namespace StudyCase.Controllers
 
             var (pagedLinks, totalPages) = await _linkProcessingService.GetPagedLinksWithFiltering(paginationModel);
 
-            // Sayfa baþýna kaç öðe olduðunu, toplam öðe sayýsýný ve geçerli sayfayý ViewData ile gönderiyoruz.
-            ViewData["CurrentPage"] = paginationModel.Page;
-            ViewData["TotalPages"] = totalPages;
-            ViewData["TotalCount"] = pagedLinks.Count;
-            ViewData["Search"] = paginationModel.Search;
-           
-            return View(pagedLinks);
+            var viewModel = new PagedLinksViewModel
+            {
+                Links = pagedLinks,
+                CurrentPage = paginationModel.Page,
+                TotalPages = totalPages,
+                SearchQuery = paginationModel.Search,
+                PageCount = pagedLinks.Count,
+            };
+
+            return View(viewModel);
         }
 
     }

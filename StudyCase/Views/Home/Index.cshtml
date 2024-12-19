@@ -1,13 +1,5 @@
-﻿@model List<string>
-
-@{
-    ViewData["Title"] = "Sozcu Web Sitesinden Çekilen Linkler";
-    var currentPage = ViewData["CurrentPage"] as int? ?? 1;
-    var totalPages = ViewData["TotalPages"] as int? ?? 1;
-    var searchQuery = ViewData["Search"] as string;
-    var currentDateTime = ViewData["CurrentDateTime"] as string; // Tarih ve saat bilgisi
-}
-
+﻿
+@model PagedLinksViewModel
 
 
 <div class="container mt-5">
@@ -22,7 +14,7 @@
     <!-- Arama Formu - Başlık Altında -->
     <div class="text-center mb-4">
         <form method="get" class="d-flex justify-content-center">
-            <input type="text" name="search" placeholder="Ara..." value="@ViewData["Search"]" class="form-control w-50 me-2" />
+            <input type="text" name="search" placeholder="Ara..." value="@Model.SearchQuery" class="form-control w-50 me-2" />
             <button type="submit" class="btn btn-primary">Ara</button>
         </form>
     </div>
@@ -30,16 +22,16 @@
     <div class="d-flex justify-content-between mb-2">
         <!-- Sayfa Numarası -->
         <div class="page-number-display text-end">
-            <strong>Sayfa: @currentPage / @totalPages</strong>
+            <strong>Sayfa: @Model.CurrentPage / @Model.TotalPages</strong>
         </div>
     </div>
 
 
     <!-- Link Listesi -->
-    @if (Model != null && Model.Count > 0)
+    @if (Model != null && Model.PageCount > 0)
     {
         <div class="list-group">
-            @foreach (var link in Model)
+            @foreach (var link in Model.Links)
             {
                 <a href="@link" class="list-group-item list-group-item-action" target="_blank">
                     @link
@@ -58,38 +50,38 @@
     <br/>
     <nav>
         <ul class="pagination justify-content-center">
-            @if (currentPage > 1)
+            @if (Model.CurrentPage > 1)
             {
                 <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index", new { page = currentPage - 1, pageSize = 10 })" aria-label="Previous">
+                    <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage - 1, pageSize = 10 })" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
             }
 
-            @for (int i = 1; i <= totalPages; i++)
+            @for (int i = 1; i <= Model.TotalPages; i++)
             {
-                <li class="page-item @(i == currentPage ? "active" : "")">
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                     <a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = 10 })">@i</a>
                 </li>
             }
 
-            @if (currentPage < totalPages)
+            @if (Model.CurrentPage < Model.TotalPages)
             {
                 <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index", new { page = currentPage + 1, pageSize = 10 })" aria-label="Next">
+                    <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage + 1, pageSize = 10 })" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
             }
         </ul>
-        @if (currentPage > 1)
+        @if (Model.CurrentPage > 1)
         {
             <div class="mt-4">
                 <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Geri Dön</a>
             </div>
         }
-        @if (!string.IsNullOrEmpty(searchQuery))
+        @if (!string.IsNullOrEmpty(Model.SearchQuery))
         {
             <div class="mt-4">
                 <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Geri Dön</a>
