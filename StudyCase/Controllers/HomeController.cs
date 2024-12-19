@@ -22,7 +22,7 @@ namespace StudyCase.Controllers
 
             var (pagedLinks, totalPages) = await _linkProcessingService.GetPagedLinksWithFiltering(paginationModel);
 
-            // Sayfa baþýna kaç öðe olduðunu, toplam öðe sayýsýný ve geçerli sayfayý ViewData ile gönderiyoruz
+            // Sayfa baþýna kaç öðe olduðunu, toplam öðe sayýsýný ve geçerli sayfayý ViewData ile gönderiyoruz.
             ViewData["CurrentPage"] = paginationModel.Page;
             ViewData["TotalPages"] = totalPages;
             ViewData["TotalCount"] = pagedLinks.Count;

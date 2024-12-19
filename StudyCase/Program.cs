@@ -17,7 +17,7 @@ builder.Services.AddScoped<IWebCrawlerService, WebCrawlerService>();  // WebCraw
 builder.Services.AddScoped<IElasticsearchService, ElasticsearchService>();  
 builder.Services.AddScoped<ILinkProcessingService, LinkProcessingService>();
 builder.Services.AddScoped<ISozcuService, SozcuService>();
-builder.Services.AddScoped<IHtmlLoaderService, HtmlWebLoaderService>();  // HtmlLoader'ý DI'ye ekliyoruz (gerekliyse)
+builder.Services.AddScoped<IHtmlLoaderService, HtmlLoaderService>();  // HtmlLoader'ý DI'ye ekliyoruz (gerekliyse)
 
 
 
